@@ -3,7 +3,7 @@ project(lua C)
 
 ################################################################################
 #### FETCH
-set(FETCHCONTENT_QUIET OFF)
+set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 include(FetchContent)
 FetchContent_Declare(lua_src
     URL https://www.lua.org/ftp/lua-5.4.6.tar.gz
