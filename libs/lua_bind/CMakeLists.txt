@@ -13,6 +13,11 @@ set(CMAKE_C_STANDARD 11)
 
 ################################################################################
 #### INCLUDE
+
+message(STATUS "LUA_NODE_BASE_INCLUDE_DIR: ${LUA_NODE_BASE_INCLUDE_DIR}")
+message(STATUS "LUA_NODE_BASE_LIBRARY: ${LUA_NODE_BASE_LIBRARY}")
+message(STATUS "LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${LUA_NODE_BASE_INCLUDE_DIR})

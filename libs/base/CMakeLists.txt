@@ -14,19 +14,19 @@ message(STATUS "IS_TARGET_OS_MACOS: ${IS_TARGET_OS_MACOS}")
 message(STATUS "IS_TARGET_OS_FREEBSD: ${IS_TARGET_OS_FREEBSD}")
 
 if(IS_TARGET_OS_WINDOWS)
-    add_compile_definitions(-DIS_TARGET_OS_WINDOWS)
+    add_compile_definitions(IS_TARGET_OS_WINDOWS)
 endif ()
 
 if(IS_TARGET_OS_LINUX)
-    add_compile_definitions(-DIS_TARGET_OS_LINUX)
+    add_compile_definitions(IS_TARGET_OS_LINUX)
 endif ()
 
 if(IS_TARGET_OS_MACOS)
-    add_compile_definitions(-DIS_TARGET_OS_MACOS)
+    add_compile_definitions(IS_TARGET_OS_MACOS)
 endif ()
 
 if(IS_TARGET_OS_FREEBSD)
-    add_compile_definitions(-DIS_TARGET_OS_FREEBSD)
+    add_compile_definitions(IS_TARGET_OS_FREEBSD)
 endif ()
 
 ################################################################################
@@ -35,8 +35,8 @@ configure_file(ln_config.h.in ln_config.h)
 
 ################################################################################
 #### INCLUDE
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 ################################################################################
 #### SOURCES

@@ -37,23 +37,38 @@ endforeach ()
 
 ################################################################################
 #### COMPILE
+
+
+message(STATUS "READLINE_FOUND: ${READLINE_FOUND}")
+
 add_library(${PROJECT_NAME} ${SOURCES})
 
 if(IS_TARGET_OS_FREEBSD)
+    find_package(readline)
     target_compile_definitions(${PROJECT_NAME} PUBLIC -DLUA_USE_LINUX -DLUA_USE_READLINE)
     target_include_directories(${PROJECT_NAME} PUBLIC "/usr/include/edit")
     target_link_libraries(${PROJECT_NAME} PUBLIC edit)
+    if(READLINE_FOUND)
+        target_link_libraries(${PROJECT_NAME} PUBLIC ${READLINE_LIBRARY})
+    endif ()
 endif ()
 
 if(IS_TARGET_OS_LINUX)
+    find_package(readline)
     target_compile_definitions(${PROJECT_NAME} PUBLIC -DLUA_USE_LINUX)
-    target_link_libraries(${PROJECT_NAME} PUBLIC dl)
+    target_link_libraries(${PROJECT_NAME} PUBLIC m)
+    if(READLINE_FOUND)
+        target_link_libraries(${PROJECT_NAME} PUBLIC ${READLINE_LIBRARY})
+    endif ()
 endif ()
 
 if(IS_TARGET_OS_MACOS)
     target_compile_definitions(${PROJECT_NAME} PUBLIC -DLUA_USE_MACOSX)
     target_link_libraries(${PROJECT_NAME} PUBLIC readline)
 endif ()
+
+
+
 
 ################################################################################
 #### EXPORT
