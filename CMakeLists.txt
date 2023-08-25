@@ -11,6 +11,7 @@ set(SIZEOF_VOID_P ${CMAKE_SIZEOF_VOID_P})
 ################################################################################
 #### SUB PROJECTS
 
+add_subdirectory(deps/miniz)
 add_subdirectory(deps/lua)
 add_subdirectory(libs/base)
 add_subdirectory(libs/lua_bind)
