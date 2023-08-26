@@ -51,7 +51,10 @@ void lua_bind_integers(lua_State* L, lua_bind_integer_t values[]);
 void lua_bind_numbers(lua_State* L, lua_bind_number_t values[]);
 void lua_bind_bools(lua_State* L, lua_bind_bool_t values[]);
 
-void lua_bind_libs(lua_State* L, luaL_Reg libs[]);
+void lua_bind_libs(lua_State* L, const luaL_Reg libs[]);
+
+void lua_bind_loaded(lua_State* L, const luaL_Reg libs[]);
+void lua_bind_preload(lua_State* L, const luaL_Reg libs[]);
 
 void lua_bind_stack_dump(lua_State* L, const char* file, int line);
 

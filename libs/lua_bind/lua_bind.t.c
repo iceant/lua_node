@@ -140,7 +140,7 @@ int main(int argc, char** argv)
     luaL_openlibs(L);
 
     lua_bind_libs(L, libs);
-    LUA_BIND_DUMP(L);
+    
 
     if(luaL_dostring(L, "return require('init')(...)")){
         printf("failed!\n");

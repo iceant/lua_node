@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(lua_bind C)
+project(lua_libs C)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -14,13 +14,18 @@ set(CMAKE_C_STANDARD 11)
 ################################################################################
 #### INCLUDE
 
-message(STATUS "LUA_NODE_BASE_INCLUDE_DIR: ${LUA_NODE_BASE_INCLUDE_DIR}")
-message(STATUS "LUA_NODE_BASE_LIBRARY: ${LUA_NODE_BASE_LIBRARY}")
-message(STATUS "LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
+message(STATUS "${PROJECT_NAME} LUA_NODE_BASE_INCLUDE_DIR: ${LUA_NODE_BASE_INCLUDE_DIR}")
+message(STATUS "${PROJECT_NAME} LUA_NODE_BASE_LIBRARY: ${LUA_NODE_BASE_LIBRARY}")
+message(STATUS "${PROJECT_NAME} LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
+message(STATUS "${PROJECT_NAME} LUA_BIND_INCLUDE_DIR: ${LUA_BIND_INCLUDE_DIR}")
+message(STATUS "${PROJECT_NAME} MINIZ_INCLUDE_DIR: ${MINIZ_INCLUDE_DIR}")
+
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${LUA_NODE_BASE_INCLUDE_DIR})
+include_directories(${LUA_BIND_INCLUDE_DIR})
+include_directories(${MINIZ_INCLUDE_DIR})
 
 ################################################################################
 #### SOURCES
@@ -31,8 +36,8 @@ foreach (item IN LISTS SOURCES)
 endforeach ()
 
 add_library(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${LUA_NODE_BASE_LIBRARY} ${LUA_LIBRARY})
-
+target_link_libraries(${PROJECT_NAME} ${LUA_NODE_BASE_LIBRARY} ${LUA_LIBRARY} ${LUA_BIND_LIBRARY})
+target_compile_definitions(${PROJECT_NAME} PUBLIC MINIZ_NO_ZLIB_COMPATIBLE_NAMES)
 ################################################################################
 #### TEST
 file(GLOB TEST_SOURCES *.t.c)
@@ -52,8 +57,3 @@ foreach (item IN LISTS MAIN_SOURCES)
     add_executable(${MainUnit} ${item})
     target_link_libraries(${MainUnit} ${PROJECT_NAME})
 endforeach ()
-
-################################################################################
-#### VARIABLES
-set(LUA_BIND_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "")
-set(LUA_BIND_LIBRARY ${PROJECT_NAME} CACHE STRING "")

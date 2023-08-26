@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(lua_bind C)
+project(process-info C)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -9,18 +9,11 @@ set(CMAKE_C_STANDARD 11)
 
 ################################################################################
 #### CONFIG
-
+configure_file(config.h.in config.h)
 
 ################################################################################
 #### INCLUDE
-
-message(STATUS "LUA_NODE_BASE_INCLUDE_DIR: ${LUA_NODE_BASE_INCLUDE_DIR}")
-message(STATUS "LUA_NODE_BASE_LIBRARY: ${LUA_NODE_BASE_LIBRARY}")
-message(STATUS "LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${LUA_INCLUDE_DIR})
-include_directories(${LUA_NODE_BASE_INCLUDE_DIR})
 
 ################################################################################
 #### SOURCES
@@ -31,8 +24,6 @@ foreach (item IN LISTS SOURCES)
 endforeach ()
 
 add_library(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${LUA_NODE_BASE_LIBRARY} ${LUA_LIBRARY})
-
 ################################################################################
 #### TEST
 file(GLOB TEST_SOURCES *.t.c)
@@ -49,11 +40,6 @@ file(GLOB MAIN_SOURCES *.m.c)
 foreach (item IN LISTS MAIN_SOURCES)
     get_filename_component(MainUnit ${item} NAME_WE)
     message(STATUS "${PROJECT_NAME} MAIN PROGRAM: ${MainUnit} - ${item}")
-    add_executable(${MainUnit} ${item})
-    target_link_libraries(${MainUnit} ${PROJECT_NAME})
+    add_executable(${MainUnit}.m ${item})
+    target_link_libraries(${MainUnit}.m ${PROJECT_NAME})
 endforeach ()
-
-################################################################################
-#### VARIABLES
-set(LUA_BIND_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "")
-set(LUA_BIND_LIBRARY ${PROJECT_NAME} CACHE STRING "")

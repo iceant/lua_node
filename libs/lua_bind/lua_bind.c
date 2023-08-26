@@ -66,16 +66,44 @@ void lua_bind_bools(lua_State* L, lua_bind_bool_t values[])
     }
 }
 
-void lua_bind_libs(lua_State* L, luaL_Reg libs[])
+void lua_bind_libs(lua_State* L, const luaL_Reg libs[])
 {
     const luaL_Reg *lib;
-    /* "require" functions from 'loadedlibs' and set results to global table */
+    /* "require" functions from 'libs' and set results to global table */
     for (lib = libs; lib->func; lib++) {
         luaL_requiref(L, lib->name, lib->func, 1);
         lua_pop(L, 1);  /* remove lib */
     }
 }
 
+void lua_bind_loaded(lua_State* L, const luaL_Reg libs[])
+{
+    const luaL_Reg * lib;
+    int top = lua_gettop(L);
+    lua_getglobal(L, "package");
+    lua_getfield(L, -1, "loaded");
+    
+    for(lib = libs; lib->func && lib->name; lib++){
+        lua_pushcfunction(L, lib->func);
+        lua_call(L, 0, 1);
+        lua_setfield(L, -2, lib->name);
+    }
+    lua_settop(L, top);
+}
+
+void lua_bind_preload(lua_State* L, const luaL_Reg libs[])
+{
+    const luaL_Reg * lib;
+    int top = lua_gettop(L);
+    lua_getglobal(L, "package");
+    lua_getfield(L, -1, "preload");
+    lua_remove(L, -2);
+    for(lib = libs; lib->func && lib->name; lib++){
+        lua_pushcfunction(L, lib->func);
+        lua_setfield(L, -2, lib->name);
+    }
+    lua_settop(L, top);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////
@@ -159,9 +187,10 @@ void lua_bind_stack_dump(lua_State* L, const char* file, int line)
                 }
                 break;
             case LUA_TTABLE:
-                lua_bind_dump_table(L, positive, level+1);
+//                lua_bind_dump_table(L, positive, level+1);
                 break;
         }
         printf("\n");
     }
 }
+
